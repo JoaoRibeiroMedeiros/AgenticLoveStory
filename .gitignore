@@ -1,11 +1,8 @@
 .env
 .vscode
-
+flagged/
 config.json
-
 training_sierra.ipynb
 Sierra_exercise.ipynb
-
 history_of_animals.txt
-
 src/__pycache__/*.pyc
