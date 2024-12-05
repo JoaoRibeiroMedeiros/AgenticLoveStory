@@ -1,6 +1,6 @@
 from langgraph.graph import END, START, StateGraph
+from IPython.display import Markdown, display
 import os
-
 from src.read import (
     make_summary,
     get_main_themes,
@@ -12,6 +12,7 @@ from src.read import (
     get_marketability,
     ReadState
 )
+
 
 class WorkflowManager:
 
@@ -42,3 +43,10 @@ class WorkflowManager:
     def invoke(self, initial_state: ReadState):
         output = self.app.invoke(input = initial_state)
         return output
+
+
+def display_outputs(readflow):
+
+    for key in list(readflow['outputs'].keys()):
+        display(Markdown(f"### {key.replace('_', ' ').capitalize()}"))
+        display(Markdown(readflow['outputs'][key]))

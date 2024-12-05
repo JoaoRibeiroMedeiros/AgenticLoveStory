@@ -12,32 +12,15 @@ class ReadState(BaseModel):
 
 
 # Load prompts from JSON file
-with open('/Users/joao/AgenticLoveStory/prompts_per_action.json', 'r') as file:
-    prompts = json.load(file)
+with open('/Users/joao/AgenticLoveStory/get_prompts.json', 'r') as file:
+    prompt_get = json.load(file)
 
-
-
-summary_prompt = prompts["summary_prompt"]
-get_main_themes_prompt = prompts["get_main_themes_prompt"]
-get_character_development_prompt = prompts["get_character_development_prompt"]
-get_conflict_resolution_prompt = prompts["get_conflict_resolution_prompt"]
-get_pacing_and_structure_prompt = prompts["get_pacing_and_structure_prompt"]
-get_pros_prompt = prompts["get_pros_prompt"]
-get_cons_prompt = prompts["get_cons_prompt"]
-get_marketability_prompt = prompts["get_marketability_prompt"]
-
-leverage_summary_prompt = prompts["leverage_summary_prompt"]
-leverage_main_themes_prompt = prompts["leverage_main_themes_prompt"]
-leverage_character_development_prompt = prompts["leverage_character_development_prompt"]
-leverage_conflict_resolution_prompt = prompts["leverage_conflict_resolution_prompt"]
-leverage_pacing_and_structure_prompt = prompts["leverage_pacing_and_structure_prompt"]
-leverage_pros_prompt = prompts["leverage_pros_prompt"]
-leverage_cons_prompt = prompts["leverage_cons_prompt"]
-leverage_marketability_prompt = prompts["leverage_marketability_prompt"]
-
+with open('/Users/joao/AgenticLoveStory/leverage_prompts.json', 'r') as file:
+    prompt_leverage = json.load(file)
 
 with open('config.json', 'r') as config_file:
     config = json.load(config_file)
+
     
 os.environ["OPEN_API_KEY"] = config["OPENAI_API_SECRET_KEY"]
 
@@ -58,7 +41,7 @@ def call_model(field):
 
 def load_outputs_placeholder(story_line):
         # Define the path to the JSON file
-    json_file_path = 'prompts_per_action.json'
+    json_file_path = 'get_prompts.json'
 
     # Read the JSON file and load the prompts
     with open(json_file_path, 'r') as file:
@@ -70,150 +53,78 @@ def load_outputs_placeholder(story_line):
     return outputs
 
 
+def get_initial_state(story_line):
+
+    initial_state_outputs_placeholder = load_outputs_placeholder(story_line)
+
+    with open('get_prompts.json', 'r') as file:
+        get_prompts = json.load(file)
+
+    initial_state =  ReadState(prompts = get_prompts, outputs = initial_state_outputs_placeholder)
+
+    return initial_state
+
+
 def make_summary(state: ReadState):
-    summary = call_model(summary_prompt + state.outputs['story_line'])
-    output_state = ReadState(outputs={
-        'story_line': state.outputs['story_line'], 
-        'summary': summary, 
-        'main_themes': "", 
-        'character_development': "",
-        'conflict_resolution': "",
-        'pacing_structure': "",
-        'pros': "", 
-        'cons': "",
-        'marketability': ""
-    }, prompts=state.prompts)
-    return output_state
+    summary = call_model(prompt_get['summary'] + state.outputs['story_line'])
+    state.outputs['summary'] = summary
+    return state
 
 def get_main_themes(state: ReadState):
-    main_themes = call_model(get_main_themes_prompt + state.outputs['story_line'] 
-                             + leverage_summary_prompt + state.outputs['story_line'])
-    output_state = ReadState(outputs={
-        'story_line': state.outputs['story_line'], 
-        'summary': state.outputs['summary'], 
-        'main_themes': main_themes, 
-        'character_development': "",
-        'conflict_resolution': "",
-        'pacing_structure': "",
-        'pros': "", 
-        'cons': "",
-        'marketability': ""
-    }, prompts=state.prompts)
-    return output_state
+    main_themes = call_model(prompt_get['main_themes'] + state.outputs['story_line'] 
+                             + prompt_leverage['summary'] + state.outputs['story_line'])
+    state.outputs['main_themes'] = main_themes
+    return state
 
 def get_character_development(state: ReadState):
-    character_development = call_model(get_character_development_prompt + state.outputs['story_line'] 
-                             + leverage_summary_prompt + state.outputs['story_line'])
-    output_state = ReadState(outputs={
-        'story_line': state.outputs['story_line'], 
-        'summary': state.outputs['summary'], 
-        'main_themes': state.outputs['main_themes'], 
-        'character_development': character_development,
-        'conflict_resolution': "",
-        'pacing_structure': "",
-        'pros': "", 
-        'cons': "",
-        'marketability': ""
-    }, prompts=state.prompts)
-    return output_state
+    character_development = call_model(prompt_get['character_development'] + state.outputs['story_line'] 
+                             + prompt_leverage['summary'] + state.outputs['story_line'])
+    state.outputs['character_development'] = character_development
+    return state
 
 def get_conflict_resolution(state: ReadState):
-    conflict_resolution = call_model(get_conflict_resolution_prompt + state.outputs['story_line'] 
-                             + leverage_summary_prompt + state.outputs['story_line'])
-    output_state = ReadState(outputs={
-        'story_line': state.outputs['story_line'], 
-        'summary': state.outputs['summary'], 
-        'main_themes': state.outputs['main_themes'], 
-        'character_development': state.outputs['character_development'],
-        'conflict_resolution': conflict_resolution,
-        'pacing_structure': "",
-        'pros': "", 
-        'cons': "",
-        'marketability': ""
-    }, prompts=state.prompts)
-    return output_state
+    conflict_resolution = call_model(prompt_get['conflict_resolution'] + state.outputs['story_line'] 
+                             + prompt_leverage['summary'] + state.outputs['story_line'])
+    state.outputs['conflict_resolution'] = conflict_resolution
+    return state
 
 def get_pacing_and_structure(state: ReadState):
-    pacing_structure = call_model(get_pacing_and_structure_prompt + state.outputs['story_line'] 
-                      + leverage_summary_prompt + state.outputs['summary'] 
-                      + leverage_main_themes_prompt + state.outputs['main_themes'])
-    output_state = ReadState(outputs={
-        'story_line': state.outputs['story_line'], 
-        'summary': state.outputs['summary'], 
-        'main_themes': state.outputs['main_themes'], 
-        'character_development': state.outputs['character_development'],
-        'conflict_resolution': state.outputs['conflict_resolution'],
-        'pacing_structure': pacing_structure,
-        'pros': "", 
-        'cons': "",
-        'marketability': ""
-    }, prompts=state.prompts)
-    return output_state
+    pacing_and_structure = call_model(prompt_get['pacing_and_structure'] + state.outputs['story_line'] 
+                      + prompt_leverage['summary'] + state.outputs['summary'] 
+                      + prompt_leverage['main_themes'] + state.outputs['main_themes'])
+    state.outputs['pacing_and_structure'] = pacing_and_structure
+    return state
 
 def get_pros(state: ReadState):
-    pros = call_model(get_pros_prompt + state.outputs['story_line'] + 
-                      leverage_summary_prompt + state.outputs['summary'] + 
-                      leverage_main_themes_prompt + state.outputs['main_themes'] +
-                      leverage_character_development_prompt + state.outputs['character_development'] +
-                      leverage_conflict_resolution_prompt + state.outputs['conflict_resolution'] +
-                      leverage_pacing_and_structure_prompt + state.outputs['conflict_resolution'] 
+    pros = call_model(prompt_get['pros'] + state.outputs['story_line'] + 
+                      prompt_leverage['summary'] + state.outputs['summary'] + 
+                      prompt_leverage['main_themes'] + state.outputs['main_themes'] +
+                      prompt_leverage['character_development'] + state.outputs['character_development'] +
+                      prompt_leverage['conflict_resolution'] + state.outputs['conflict_resolution'] +
+                      prompt_leverage['pacing_and_structure'] + state.outputs['conflict_resolution'] 
                       )
-
-    output_state = ReadState(outputs={
-        'story_line': state.outputs['story_line'], 
-        'summary': state.outputs['summary'], 
-        'main_themes': state.outputs['main_themes'], 
-        'character_development': state.outputs['character_development'],
-        'conflict_resolution': state.outputs['conflict_resolution'],
-        'pacing_structure': state.outputs['pacing_structure'],
-        'pros': pros, 
-        'cons': "",
-        'marketability': ""
-    }, prompts=state.prompts)
-
-    return output_state
+    state.outputs['pros'] = pros
+    return state
 
 def get_cons(state: ReadState):
-    cons = call_model(get_cons_prompt + state.outputs['story_line'] + 
-                      leverage_summary_prompt + state.outputs['summary'] + 
-                      leverage_main_themes_prompt + state.outputs['main_themes'] +
-                      leverage_character_development_prompt + state.outputs['character_development'] +
-                      leverage_conflict_resolution_prompt + state.outputs['conflict_resolution'] +
-                      leverage_pacing_and_structure_prompt + state.outputs['conflict_resolution'] 
+    cons = call_model(prompt_get['cons'] + state.outputs['story_line'] + 
+                      prompt_leverage['summary'] + state.outputs['summary'] + 
+                      prompt_leverage['main_themes'] + state.outputs['main_themes'] +
+                      prompt_leverage['character_development'] + state.outputs['character_development'] +
+                      prompt_leverage['conflict_resolution'] + state.outputs['conflict_resolution'] +
+                      prompt_leverage['pacing_and_structure'] + state.outputs['conflict_resolution'] 
                       )
-    output_state = ReadState(outputs={
-        'story_line': state.outputs['story_line'], 
-        'summary': state.outputs['summary'], 
-        'main_themes': state.outputs['main_themes'], 
-        'character_development': state.outputs['character_development'],
-        'conflict_resolution': state.outputs['conflict_resolution'],
-        'pacing_structure': state.outputs['pacing_structure'],
-        'pros': state.outputs['pros'], 
-        'cons': cons,
-        'marketability': ""
-    }, prompts=state.prompts)
-    return output_state
+    state.outputs['cons'] = cons
+    return state
 
 def get_marketability(state: ReadState):
 
-    marketabillity = call_model(get_marketability_prompt + state.outputs['story_line'] + 
-                      leverage_summary_prompt + state.outputs['summary'] + 
-                      leverage_main_themes_prompt + state.outputs['main_themes'] +
-                      leverage_character_development_prompt + state.outputs['character_development'] +
-                      leverage_conflict_resolution_prompt + state.outputs['conflict_resolution'] +
-                      leverage_pacing_and_structure_prompt + state.outputs['conflict_resolution'] 
+    marketability = call_model(prompt_get['marketability'] + state.outputs['story_line'] + 
+                      prompt_leverage['summary'] + state.outputs['summary'] + 
+                      prompt_leverage['main_themes'] + state.outputs['main_themes'] +
+                      prompt_leverage['character_development'] + state.outputs['character_development'] +
+                      prompt_leverage['conflict_resolution'] + state.outputs['conflict_resolution'] +
+                      prompt_leverage['pacing_and_structure'] + state.outputs['conflict_resolution'] 
                       )
-
-    output_state = ReadState(outputs={
-        'story_line': state.outputs['story_line'], 
-        'summary': state.outputs['summary'], 
-        'main_themes': state.outputs['main_themes'], 
-        'character_development': state.outputs['character_development'],
-        'conflict_resolution': state.outputs['conflict_resolution'],
-        'pacing_structure': state.outputs['pacing_structure'],
-        'pros': state.outputs['pros'], 
-        'cons': state.outputs['cons'],
-        'marketability': ""
-    }, prompts=state.prompts)
-
-    return output_state
+    state.outputs['marketability'] = marketability
+    return state
