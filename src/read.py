@@ -12,10 +12,10 @@ class ReadState(BaseModel):
 
 
 # Load prompts from JSON file
-with open('/Users/joao/AgenticLoveStory/get_prompts.json', 'r') as file:
+with open('/Users/joao/AgenticLoveStory/prompts/read/get_prompts.json', 'r') as file:
     prompt_get = json.load(file)
 
-with open('/Users/joao/AgenticLoveStory/leverage_prompts.json', 'r') as file:
+with open('/Users/joao/AgenticLoveStory/prompts/read/leverage_prompts.json', 'r') as file:
     prompt_leverage = json.load(file)
 
 with open('config.json', 'r') as config_file:
@@ -39,7 +39,7 @@ def call_model(field):
         response_content = str(response)
     return response_content
 
-def load_outputs_placeholder(story_line):
+def load_outputs_placeholder(storyline):
         # Define the path to the JSON file
     json_file_path = 'get_prompts.json'
 
@@ -49,7 +49,7 @@ def load_outputs_placeholder(story_line):
 
     outputs = {}
     
-    outputs['story_line'] = story_line
+    outputs['storyline'] = storyline
 
     for action in list(prompts_per_action.keys()): 
         outputs[action] = ""
@@ -57,9 +57,9 @@ def load_outputs_placeholder(story_line):
     return outputs
 
 
-def get_initial_state(story_line):
+def get_initial_state(storyline):
 
-    initial_state_outputs_placeholder = load_outputs_placeholder(story_line)
+    initial_state_outputs_placeholder = load_outputs_placeholder(storyline)
 
     with open('get_prompts.json', 'r') as file:
         get_prompts = json.load(file)
@@ -70,37 +70,37 @@ def get_initial_state(story_line):
 
 
 def make_summary(state: ReadState):
-    summary = call_model(prompt_get['summary'] + state.outputs['story_line'])
+    summary = call_model(prompt_get['summary'] + state.outputs['storyline'])
     state.outputs['summary'] = summary
     return state
 
 def get_main_themes(state: ReadState):
-    main_themes = call_model(prompt_get['main_themes'] + state.outputs['story_line'] 
-                             + prompt_leverage['summary'] + state.outputs['story_line'])
+    main_themes = call_model(prompt_get['main_themes'] + state.outputs['storyline'] 
+                             + prompt_leverage['summary'] + state.outputs['storyline'])
     state.outputs['main_themes'] = main_themes
     return state
 
 def get_character_development(state: ReadState):
-    character_development = call_model(prompt_get['character_development'] + state.outputs['story_line'] 
-                             + prompt_leverage['summary'] + state.outputs['story_line'])
+    character_development = call_model(prompt_get['character_development'] + state.outputs['storyline'] 
+                             + prompt_leverage['summary'] + state.outputs['storyline'])
     state.outputs['character_development'] = character_development
     return state
 
 def get_conflict_resolution(state: ReadState):
-    conflict_resolution = call_model(prompt_get['conflict_resolution'] + state.outputs['story_line'] 
-                             + prompt_leverage['summary'] + state.outputs['story_line'])
+    conflict_resolution = call_model(prompt_get['conflict_resolution'] + state.outputs['storyline'] 
+                             + prompt_leverage['summary'] + state.outputs['storyline'])
     state.outputs['conflict_resolution'] = conflict_resolution
     return state
 
 def get_pacing_and_structure(state: ReadState):
-    pacing_and_structure = call_model(prompt_get['pacing_and_structure'] + state.outputs['story_line'] 
+    pacing_and_structure = call_model(prompt_get['pacing_and_structure'] + state.outputs['storyline'] 
                       + prompt_leverage['summary'] + state.outputs['summary'] 
                       + prompt_leverage['main_themes'] + state.outputs['main_themes'])
     state.outputs['pacing_and_structure'] = pacing_and_structure
     return state
 
 def get_pros(state: ReadState):
-    pros = call_model(prompt_get['pros'] + state.outputs['story_line'] + 
+    pros = call_model(prompt_get['pros'] + state.outputs['storyline'] + 
                       prompt_leverage['summary'] + state.outputs['summary'] + 
                       prompt_leverage['main_themes'] + state.outputs['main_themes'] +
                       prompt_leverage['character_development'] + state.outputs['character_development'] +
@@ -111,7 +111,7 @@ def get_pros(state: ReadState):
     return state
 
 def get_cons(state: ReadState):
-    cons = call_model(prompt_get['cons'] + state.outputs['story_line'] + 
+    cons = call_model(prompt_get['cons'] + state.outputs['storyline'] + 
                       prompt_leverage['summary'] + state.outputs['summary'] + 
                       prompt_leverage['main_themes'] + state.outputs['main_themes'] +
                       prompt_leverage['character_development'] + state.outputs['character_development'] +
@@ -123,7 +123,7 @@ def get_cons(state: ReadState):
 
 def get_marketability(state: ReadState):
 
-    marketability = call_model(prompt_get['marketability'] + state.outputs['story_line'] + 
+    marketability = call_model(prompt_get['marketability'] + state.outputs['storyline'] + 
                       prompt_leverage['summary'] + state.outputs['summary'] + 
                       prompt_leverage['main_themes'] + state.outputs['main_themes'] +
                       prompt_leverage['character_development'] + state.outputs['character_development'] +
