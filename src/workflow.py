@@ -1,8 +1,9 @@
 from langgraph.graph import END, START, StateGraph
 from IPython.display import Markdown, display
 import os
+
 from src.read import (
-    make_summary,
+    get_summary,
     get_main_themes,
     get_character_development,
     get_conflict_resolution,
@@ -13,13 +14,25 @@ from src.read import (
     ReadState
 )
 
+from src.write import (
+    get_you,
+    get_need,
+    get_go,
+    get_search,
+    get_find,
+    get_take,
+    get_return,
+    get_change,
+    WriteState
+)
 
-class WorkflowManager:
+
+class ReadflowManager:
 
     def __init__(self):
         self.workflow = StateGraph(ReadState)
 
-        self.workflow.add_node('make_summary', make_summary)
+        self.workflow.add_node('get_summary', get_summary)
         self.workflow.add_node('get_main_themes', get_main_themes)
         self.workflow.add_node('get_character_development', get_character_development)
         self.workflow.add_node('get_conflict_resolution', get_conflict_resolution)
@@ -43,10 +56,41 @@ class WorkflowManager:
     def invoke(self, initial_state: ReadState):
         output = self.app.invoke(input = initial_state)
         return output
+    
+
+class WriteflowManager:
+
+    def __init__(self):
+        self.workflow = StateGraph(ReadState)
+
+        self.workflow.add_node('you', get_you)
+        self.workflow.add_node('need', get_need)
+        self.workflow.add_node('go', get_go)
+        self.workflow.add_node('search', get_search)
+        self.workflow.add_node('find', get_find)
+        self.workflow.add_node('take', get_take)
+        self.workflow.add_node('return', get_return)
+        self.workflow.add_node('change', get_change)
+
+        self.workflow.add_edge(START, 'you')
+        self.workflow.add_edge('you', 'need')
+        self.workflow.add_edge('need', 'go')
+        self.workflow.add_edge('go', 'search')
+        self.workflow.add_edge('search', 'find')
+        self.workflow.add_edge('find', 'take')
+        self.workflow.add_edge('take', 'return')
+        self.workflow.add_edge('return', 'change')
+        self.workflow.add_edge('change', END)
+        
+        self.app = self.workflow.compile()
+
+    def invoke(self, initial_state: ReadState):
+        output = self.app.invoke(input = initial_state)
+        return output
 
 
-def display_outputs(readflow):
+def display_outputs(workflow):
 
-    for key in list(readflow['outputs'].keys()):
+    for key in list(workflow['outputs'].keys()):
         display(Markdown(f"### {key.replace('_', ' ').capitalize()}"))
-        display(Markdown(readflow['outputs'][key]))
+        display(Markdown(workflow['outputs'][key]))
