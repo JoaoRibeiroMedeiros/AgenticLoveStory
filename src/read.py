@@ -48,6 +48,7 @@ def load_outputs_placeholder(story_line):
         prompts_per_action = json.load(file)
 
     outputs['story_line'] = story_line
+    
     outputs = {action: "" for action in list(prompts_per_action.keys())}
     
     return outputs
