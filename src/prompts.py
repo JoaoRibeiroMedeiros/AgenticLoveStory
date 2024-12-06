@@ -15,6 +15,7 @@ def add_task_to_prompts(state_prompts, task_prompts, task):
     for i, (key, prompt) in enumerate(list(state_prompts.items())):
 
         tasked_prompt = prompt + task_prompts[task]
-        tasked_state_prompts[key] = "Part " + str(i) + " of the story: " + tasked_prompt
+       # tasked_state_prompts[key] = "Part " + str(i) + " of the story: " + tasked_prompt
+        tasked_state_prompts[key] = "Part " + str(i) + " " + tasked_prompt
     
     return tasked_state_prompts

@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from src.prompts import load_prompts, add_task_to_prompts
-from model import call_model
+from src.model import call_model
 
 
 class WriteState(BaseModel):

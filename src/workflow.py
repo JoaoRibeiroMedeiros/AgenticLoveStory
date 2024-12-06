@@ -1,6 +1,7 @@
 from langgraph.graph import END, START, StateGraph
 from IPython.display import Markdown, display
 import os
+import json
 
 from src.read import (
     get_summary,
@@ -26,7 +27,6 @@ from src.write import (
     WriteState
 )
 
-
 class ReadflowManager:
 
     def __init__(self):
@@ -41,8 +41,8 @@ class ReadflowManager:
         self.workflow.add_node('get_pros', get_pros)
         self.workflow.add_node('get_marketability', get_marketability)
 
-        self.workflow.add_edge(START, 'make_summary')
-        self.workflow.add_edge('make_summary', 'get_main_themes')
+        self.workflow.add_edge(START, 'get_summary')
+        self.workflow.add_edge('get_summary', 'get_main_themes')
         self.workflow.add_edge('get_main_themes', 'get_character_development')
         self.workflow.add_edge('get_character_development', 'get_conflict_resolution')
         self.workflow.add_edge('get_conflict_resolution', 'get_pacing_and_structure')
@@ -94,3 +94,23 @@ def display_outputs(workflow):
     for key in list(workflow['outputs'].keys()):
         display(Markdown(f"### {key.replace('_', ' ').capitalize()}"))
         display(Markdown(workflow['outputs'][key]))
+
+def save_outputs(workflow, tracking_index):
+
+    output_path = os.path.join(os.getcwd(), 'data/experiments/'+ tracking_index + '_workflow_outputs.json')
+
+    with open(output_path, 'w') as f:
+        json.dump(workflow['outputs'], f, indent=4)
+
+
+def load_outputs( tracking_index):
+
+    output_path = os.path.join(os.getcwd(), 'data/experiments/'+ tracking_index + '_workflow_outputs.json')
+
+    with open(output_path, 'r') as f:
+        outputs = json.load(f)
+
+    final = ' \n\n '.join(outputs.values())
+
+    return final
+
