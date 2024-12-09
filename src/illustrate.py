@@ -2,6 +2,9 @@ import openai
 import json
 import os
 
+from IPython.display import Image, display
+import requests
+
 # Load configuration from a JSON file
 with open('config.json', 'r') as config_file:
     config = json.load(config_file)
@@ -43,3 +46,14 @@ def get_illustration_per_stage(writing_outputs):
         img_url_per_stage[stage] = img_url
 
     return img_url_per_stage
+
+
+
+def display_image_from_url(url):
+    # Fetch the image from the URL
+    response = requests.get(url)
+    if response.status_code == 200:
+        # Display the image in the notebook
+        display(Image(url=url))
+    else:
+        print("Failed to retrieve image")
