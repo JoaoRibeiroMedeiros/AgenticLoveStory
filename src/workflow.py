@@ -110,6 +110,16 @@ def load_outputs( tracking_index):
     with open(output_path, 'r') as f:
         outputs = json.load(f)
 
+    return outputs
+
+
+def load_joined_outputs( tracking_index):
+
+    output_path = os.path.join(os.getcwd(), 'data/experiments/'+ tracking_index + '_workflow_outputs.json')
+
+    with open(output_path, 'r') as f:
+        outputs = json.load(f)
+
     final = ' \n\n '.join(outputs.values())
 
     return final
