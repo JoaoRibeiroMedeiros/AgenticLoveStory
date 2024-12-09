@@ -1,5 +1,5 @@
 {
-    "storytelling":" You are writing the outline of the story, that should be like telling an story. It is not about analyzing the story, take the aspects which were mentioned and make them work in less than 50 words in story form. Don't Itemize, Don't analyze, just tell a story in a simple and direct maneer, making sure to use the mentioned aspects.",
+    "storytelling":" You are writing the outline of the story, that should be like telling an story. It is not about analyzing the story, take the aspects which were mentioned and make them work in less than 50 words in story form. Don't Itemize, Don't analyze, just tell a story in a simple and direct manner, making sure to use the mentioned aspects, don't reveal the story stage with clarity, use it as an undertone in everything you write",
     "coherence":" Make sure your current output is coherent with this previous part of the story: ",
     "story_analysis":"You are analyzing the outline of the story. Itemize and concisely point out the investigated aspects of the story.",
     "consistency":"Make sure your current output is consistent with this previous part of the analysis:"
