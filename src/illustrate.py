@@ -39,7 +39,7 @@ def get_illustration_per_stage(writing_outputs):
 
     for stage in story_stages:
 
-        img_url = generate_image(stage)
+        img_url = generate_image(writing_outputs[stage])
         img_url_per_stage[stage] = img_url
 
     return img_url_per_stage
