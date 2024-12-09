@@ -95,6 +95,11 @@ def display_outputs(workflow):
         display(Markdown(f"### {key.replace('_', ' ').capitalize()}"))
         display(Markdown(workflow['outputs'][key]))
 
+def display_output(title, text):
+
+    display(Markdown(f"### {title.replace('_', ' ').capitalize()}"))
+    display(Markdown(text))
+
 def save_outputs(workflow, tracking_index):
 
     output_path = os.path.join(os.getcwd(), 'data/experiments/'+ tracking_index + '_workflow_outputs.json')

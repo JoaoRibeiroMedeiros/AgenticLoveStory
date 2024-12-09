@@ -64,8 +64,6 @@ def get_conflict_resolution(state: ReadState):
 
 def get_pacing_and_structure(state: ReadState):
     pacing_and_structure = call_model(story_analysis_prompts['pacing_and_structure'] + state.outputs['storyline'] )
-                   #   +consistency_prompts['summary'] + state.outputs['summary'] 
-                   #   +consistency_prompts['main_themes'] + state.outputs['main_themes'])
     state.outputs['pacing_and_structure'] = pacing_and_structure
     return state
 
