@@ -1,10 +1,10 @@
-import json
+import yaml
 
 def load_prompts(prompt_type):
 
-    json_file_path = 'prompts/'+prompt_type+'_prompts.json'
-    with open(json_file_path, 'r') as file:
-        prompts = json.load(file)
+    yaml_file_path = 'prompts/'+prompt_type+'_prompts.yaml'
+    with open(yaml_file_path, 'r') as file:
+        prompts = yaml.safe_load(file)
 
     return prompts
 
