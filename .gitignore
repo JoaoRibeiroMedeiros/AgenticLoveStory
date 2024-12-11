@@ -2,7 +2,6 @@
 .vscode
 flagged/
 config.json
-training_sierra.ipynb
-Sierra_exercise.ipynb
 history_of_animals.txt
+secrets.toml
 src/__pycache__/*.pyc

@@ -5,7 +5,7 @@ import os
 from IPython.display import Image, display
 import requests
 
-from src.workflow import display_output
+from src.ai.workflow import display_output
 
 # Load configuration from a JSON file
 with open('config.json', 'r') as config_file:

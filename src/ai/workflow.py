@@ -3,7 +3,7 @@ from IPython.display import Markdown, display
 import os
 import json
 
-from src.read import (
+from src.ai.read import (
     get_summary,
     get_main_themes,
     get_character_development,
@@ -15,7 +15,7 @@ from src.read import (
     ReadState
 )
 
-from src.write import (
+from src.ai.write import (
     get_you,
     get_need,
     get_go,

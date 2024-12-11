@@ -1,14 +1,14 @@
 
 from langchain_core.messages.ai import AIMessage
 from langchain_openai import ChatOpenAI
-import json
+
 import os
+import toml
 
+config_path = 'secrets.toml'
+config = toml.load(config_path)
 
-with open('config.json', 'r') as config_file:
-    config = json.load(config_file)
-
-os.environ["OPEN_API_KEY"] = config["OPENAI_API_SECRET_KEY"]
+os.environ["OPEN_API_KEY"] = config["OPENAI_API_KEY"]
 
 model = ChatOpenAI(model="gpt-4o",
                    max_tokens=2000,
