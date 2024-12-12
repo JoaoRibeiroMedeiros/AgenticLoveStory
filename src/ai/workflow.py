@@ -11,8 +11,7 @@ from src.ai.read import (
     get_pacing_and_structure,
     get_cons,
     get_pros,
-    get_marketability,
-    ReadState
+    get_marketability
 )
 
 from src.ai.write import (
@@ -24,14 +23,15 @@ from src.ai.write import (
     get_take,
     get_return,
     get_change,
-    WriteState
 )
+
+from src.ai.utils import FlowState
 
 class ReadflowManager:
 
     def __init__(self):
-        self.workflow = StateGraph(ReadState)
 
+        self.workflow = StateGraph(FlowState)
         self.workflow.add_node('get_summary', get_summary)
         self.workflow.add_node('get_main_themes', get_main_themes)
         self.workflow.add_node('get_character_development', get_character_development)
@@ -53,7 +53,7 @@ class ReadflowManager:
         
         self.app = self.workflow.compile()
 
-    def invoke(self, initial_state: ReadState):
+    def invoke(self, initial_state: FlowState):
         output = self.app.invoke(input = initial_state)
         return output
     
@@ -61,7 +61,7 @@ class ReadflowManager:
 class WriteflowManager:
 
     def __init__(self):
-        self.workflow = StateGraph(ReadState)
+        self.workflow = StateGraph(FlowState)
 
         self.workflow.add_node('you', get_you)
         self.workflow.add_node('need', get_need)
@@ -84,7 +84,7 @@ class WriteflowManager:
         
         self.app = self.workflow.compile()
 
-    def invoke(self, initial_state: ReadState):
+    def invoke(self, initial_state: FlowState):
         output = self.app.invoke(input = initial_state)
         return output
 
