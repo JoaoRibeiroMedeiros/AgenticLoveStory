@@ -4,4 +4,5 @@ flagged/
 config.json
 history_of_animals.txt
 secrets.toml
-src/__pycache__/*.pyc
+src/ai/__pycache__
+
