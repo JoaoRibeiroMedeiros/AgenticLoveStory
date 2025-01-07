@@ -8,7 +8,9 @@ class FlowState(BaseModel):
 def load_outputs_placeholder(story, flow_type):
 
     state_prompts = load_prompts(flow_type +'/state')
+    
     outputs = {}
+
     outputs['story'] = story
 
     for action in list(state_prompts.keys()): 

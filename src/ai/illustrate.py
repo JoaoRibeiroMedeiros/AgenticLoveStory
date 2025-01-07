@@ -6,6 +6,7 @@ from IPython.display import Image, display
 import requests
 
 from src.ai.workflow import display_output
+import yaml
 
 # Load configuration from a JSON file
 with open('config.json', 'r') as config_file:
@@ -18,10 +19,9 @@ os.environ["OPENAI_API_KEY"] = config["OPENAI_API_SECRET_KEY"]
 openai.api_key = os.environ["OPENAI_API_KEY"]
 
 def generate_image(prompt, style):
-
     # insert length threshold (1000 characters)
-    with open('prompts/illustrate/style.json', 'r') as config_file:
-        style_prompts = json.load(config_file)
+    with open('prompts/illustrate/style.yaml', 'r') as config_file:
+        style_prompts = yaml.safe_load(config_file)
 
     style_prompt = style_prompts[style]
     prompt_with_style = prompt[0:900] + style_prompt

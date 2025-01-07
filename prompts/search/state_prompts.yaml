@@ -1,0 +1,42 @@
+you: >
+    the protagonist's ordinary world and their initial state,
+    Choose his name and always use it
+need: >
+    the protagonist's need or desire that drives them to leave their comfort zone.
+go: >
+    the protagonist journeys into the unfamiliar world.
+search: >
+    the protagonist goes through trials and tribulations as they search for what they need.
+find: >
+    the protagonist finds what they were looking for.
+take: >
+    the protagonist struggles to take possession of what they found.
+return: >
+    the protagonist journeys back to their ordinary world.
+change: >
+    the protagonist has transformed as a result of their journey.
+
+context: >
+    Current story context: {context}
+    Previous search results: {previous_results}
+    Search focus: {search_focus}
+
+search_query: >
+    Based on the story context and previous results,
+    formulate a search query that will help develop the {search_focus}.
+    Query should be specific and relevant to the narrative needs.
+
+filter_results: >
+    Given these search results: {results}
+    Filter and organize the information to:
+    1. Match the story's tone and setting
+    2. Support character development
+    3. Enhance plot progression
+    4. Maintain narrative consistency
+
+integrate_findings: >
+    Take the filtered results and:
+    1. Connect them to existing story elements
+    2. Identify potential story developments
+    3. Suggest narrative applications
+    Present findings in a way that serves the story's needs.
